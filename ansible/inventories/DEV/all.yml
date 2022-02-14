@@ -1,7 +1,33 @@
 ---
-- name: user
+- name: Preconfigure
   hosts: main_server
   tasks:
-  - name: Create user
-    user: a_kan
-    name: present
+  - name: Installing Docker
+    block:
+      - name: Installing universe
+        apt_repository:
+          repo: deb http://ua.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} universe
+          state: present
+      - name: Installing additional packages
+        apt:
+           pkg:
+           - apt-get install
+           - ca-certificates
+           - curl
+           - gnupg
+           - lsb-release
+           update-cache: yes
+           cache_valid_time: 86400
+      - name: Installing key for Docker
+        apt_key:
+          url: https://download.docker.com/linux/ubuntu/gpg
+
+      - name: Installing universe
+        apt_repository:
+             repo: >
+                deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+                https://download.docker.com/linux/ubuntu
+                {{ ansible_distribution_release }} stable
+             state: present
+             update-cache: yes
+             filename: docker
