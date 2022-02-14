@@ -1,0 +1,7 @@
+---
+- name: user
+  hosts: main_server
+  tasks:
+  - name: Create user
+    user: a_kan
+    name: presentls
