@@ -10,11 +10,13 @@ services:
     ports:
       - "5432:5432"
     volumes:
-        - db:/var/lib/postgresql/_data # where "db" is the name of previously created volume /home/dev09/postgresql/data
-        - - .:/var/lib/postgresql/_data # save data to host
+      - "postgresqlDB:/var/lib/postgresql/data" # where "db" is the name of previously created volume /home/dev09/postgresql/data
+      # save data to host
     healthcheck:
       test: ping
       interval: 3s
       timeout: 5s
       retries: 5
-      start_period: 30s
+      start_period: 10s
+volumes:
+  postgresqlDB:
